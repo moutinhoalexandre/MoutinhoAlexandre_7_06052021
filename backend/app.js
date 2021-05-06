@@ -1,15 +1,16 @@
-const express = require("express"); //Import du framework express pour node.js
-const helmet = require("helmet"); //Importe helmet pour sécuriser les en-têtes des requêtes
-const mongoSanitize = require("express-mongo-sanitize"); //Import mongo-sanize qui sert à empêcher l'injection de code dans les champs utilisateurs
-const path = require("path"); //Permet d'accéder aux chemins d'accès des fichiers
-require("dotenv").config(); //Permet de créer un environnement de variables
+//Import des modules et fichiers complémentaires
+const express = require("express");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const path = require("path");
+require("dotenv").config();
 
-// const sauceRoutes = require("./routes/sauce"); //Importe le routeur pour les sauces
-// const userRoutes = require("./routes/user"); //Importe le routeur pour les utilisateurs
+//Importation des routes
+const postRoutes = require("./routes/post");
+const userRoutes = require("./routes/user");
 
 const app = express(); //Applique le framework express
 app.use(helmet()); //Applique les sous-plugins de helmet
-
 
 // Paramètres d'en-tête
 app.use((req, res, next) => {
@@ -28,14 +29,12 @@ app.use((req, res, next) => {
 });
 
 //Permet de récupérer le corps de la requête au format json
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Nettoie les champs utilisateurs des tentatives d'injection de code commençant par $ ou "."
-app.use(mongoSanitize());
-
-app.use("/images", express.static(path.join(__dirname, "images"))); //Permet de servir les fichiers statiques, présents dans le dossier images
-
-app.use("/api/sauces", sauceRoutes); //Sert les routes concernant les sauces pour toutes demande vers le endpoint /api/sauces
-app.use("/api/auth", userRoutes); //Sert les routes concernant les utilisateurs pour toutes demande vers le endpoint /api/auth
+//Definition des routes
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/api/auth", userRoutes);
+app.use("/api/post", postRoutes);
 
 module.exports = app;
