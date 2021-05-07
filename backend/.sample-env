@@ -1,0 +1,9 @@
+
+# identifiants de la base de données
+
+DATABASE ="le bom de la database"
+DATABASE_HOST ="l'adresse de connexion"
+DATABASE_USER ="le nom d'utilisateur"
+DATABASE_PASSWORD ="le mot de passe"
+
+# authentification
