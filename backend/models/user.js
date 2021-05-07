@@ -17,7 +17,7 @@ const User = database.define(
     password: DataTypes.STRING,
     image: DataTypes.STRING,
     bio: DataTypes.STRING,
-    isAdmin: {
+    is_admin: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0,
     },
