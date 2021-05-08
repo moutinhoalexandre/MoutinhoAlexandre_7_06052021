@@ -31,7 +31,7 @@ exports.signup = (req, res, next) => {
       .status(401)
       .json({
         message:
-          "Mot de passe pas assez sécurisé, il doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule, un symbole et ne pas contenir d'espace !",
+          'Mot de passe pas assez sécurisé, il doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule, un symbole et ne pas contenir d\'espace !',
       });
     return false;
   }
@@ -39,11 +39,11 @@ exports.signup = (req, res, next) => {
     .hash(req.body.password, 10) //On hash le mot de passe et on le sale 10 fois
     .then((hash) => {
       User.create({
-        username: re.body.username,
+        username: req.body.username,
         email: req.body.email,
         password: hash, //le mot de passe crypté
       })
-        .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
+        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
         .catch((error) => res.status(400).json({ error }));
     })
     .catch((error) => res.status(500).json({ error }));
@@ -51,27 +51,28 @@ exports.signup = (req, res, next) => {
 
 //Connection d'un utlisateur existant
 exports.login = (req, res, next) => {
+  const email = req.body.email;
   User.findOne({
-    email: req.body.email,
+    where: {email}
   }) //On cherche l'email correspondant dans la collection
     .then((user) => {
       if (!user) {
-        return res.status(401).json({ error: "Utilisateur non trouvé !" });
+        return res.status(401).json({ error: 'Utilisateur non trouvé !' });
       }
       bcrypt
         .compare(req.body.password, user.password) //on compare le mot de passe de la requête avec le hash de l'utilisateur
         .then((valid) => {
           if (!valid) {
-            return res.status(401).json({ error: "Mot de passe incorrect !" });
+            return res.status(401).json({ error: 'Mot de passe incorrect !' });
           }
           res.status(200).json({
-            userId: user._id,
+            userId: user.id,
             token: jwt.sign(
-              //On attribue un token d'authentification
-              { userId: user._id },
+              { userId: user.id },
               process.env.JWT_SECRET_TOKEN,
-              { expiresIn: "24h" }
+              { expiresIn: '24h' }
             ),
+            is_admin: user.is_admin,
           });
         })
         .catch((error) => res.status(500).json({ error }));
