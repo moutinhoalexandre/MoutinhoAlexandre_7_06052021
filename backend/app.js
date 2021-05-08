@@ -1,12 +1,11 @@
 //Import des modules et fichiers complémentaires
 const express = require("express");
 const helmet = require("helmet");
-const mongoSanitize = require("express-mongo-sanitize");
 const path = require("path");
 require("dotenv").config();
 
 //Importation des routes
-const postRoutes = require("./routes/post");
+// const postRoutes = require("./routes/post");
 const userRoutes = require("./routes/user");
 
 const app = express(); //Applique le framework express
@@ -35,6 +34,6 @@ app.use(express.json());
 //Definition des routes
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", userRoutes);
-app.use("/api/post", postRoutes);
+// app.use("/api/post", postRoutes);
 
 module.exports = app;

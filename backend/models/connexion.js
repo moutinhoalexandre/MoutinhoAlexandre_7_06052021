@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 //connection à la base de données
 const database = new Sequelize(
-  `mysql://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}/${process.env.DB_DATABASE}`
+  `mysql://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}/${process.env.DATABASE}`
 );
 
 database

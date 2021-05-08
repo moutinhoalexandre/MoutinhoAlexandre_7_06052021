@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt"); //Permet de hasher et saler les mots de passe
 const jwt = require("jsonwebtoken"); //Permet de créer un token utilisateur
 
-const User = require("../models/user");
+const { User } = require("../models/index");
 
 const passwordValidator = require("password-validator");
 const schema = new passwordValidator(); //On crée un schema pour obtenir des mots de passe plus sécurisés
@@ -26,7 +26,7 @@ schema
 //Enregistrement d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
   if (!schema.validate(req.body.password)) {
-    //Renvoie une erreur si le schema de mot de passe n'est pas respecté
+    //Vérifie si  le schema de mot de passe est pas respecté
     res
       .status(401)
       .json({
@@ -38,12 +38,11 @@ exports.signup = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10) //On hash le mot de passe et on le sale 10 fois
     .then((hash) => {
-      const user = new User({
+      User.create({
+        username: re.body.username,
         email: req.body.email,
         password: hash, //le mot de passe crypté
-      });
-      user
-        .save() //on sauvegarde les données du nouvel utilisateur dans la bdd
+      })
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
         .catch((error) => res.status(400).json({ error }));
     })
