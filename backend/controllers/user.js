@@ -79,3 +79,36 @@ exports.login = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
+
+//Modifier un utilisateur
+exports.modifyUser = (req, res, next) => {
+  const id = JSON.parse(req.params.id)
+  const token = req.headers.authorization.split(' ')[1];//On extrait le token de la requête
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);//On décrypte le token grâce à la clé secrète
+  const userId = decodedToken.userId;//On récupère l'userId du token décrypté
+  if(id === userId) {
+    User.findOne({ where: { id: id } })
+      .then(user => {
+        //Si une nouvelle image est reçue dans la requête
+        if (req.file) {
+          if (user.image !== null){
+            const fileName = user.image.split('/images/')[1]
+            fs.unlink(`images/${fileName}`, (err => {//On supprime l'ancienne image
+              if (err) console.log(err);
+              else {
+                  console.log("Image supprimée: " + fileName);
+              }
+            }))
+          }
+          req.body.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        }
+        delete(req.body.isAdmin);
+        user.update( {...req.body, id: req.params.id} )
+        .then(() => res.status(200).json({ message: 'Votre profil est modifié !' }))
+        .catch(error => res.status(400).json({ error }));
+      })
+      .catch(error => res.status(500).json({ error }));
+  }else {
+    return res.status(401).json({ error: "vous n'avez pas l'autorisation nécessaire !" });
+  }
+};
