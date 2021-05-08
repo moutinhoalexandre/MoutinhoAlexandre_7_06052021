@@ -11,6 +11,14 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        username: "emeline",
+        email: "emeline@gmail.fr",
+        password: "e@123456",
+        is_admin: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
