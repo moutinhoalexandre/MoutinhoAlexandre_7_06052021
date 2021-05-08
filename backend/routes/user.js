@@ -10,5 +10,7 @@ router.post("/signup", userCtrl.signup); //Créer un nouvel utilisateur
 router.post("/login", authentificationLimiter, userCtrl.login); //Login d'un utilisateur existant TODO:authenticationLimiter
 
 router.put("/profile/:id", multer, userCtrl.modifyUser); //Modifier un utilisateur
+router.put("/profile/:id/password", multer, userCtrl.modifyPassword); //Modifier un utilisateur
+
 
 module.exports = router;
