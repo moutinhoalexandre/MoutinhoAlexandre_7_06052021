@@ -45,7 +45,7 @@ exports.signup = (req, res, next) => {
       User.create({
         username: req.body.username,
         email: req.body.email,
-        password: hash, //le mot de passe crypté
+        password: hash,
       })
         .then(() => res.status(201).json({ message: `Utilisateur créé !` }))
         .catch((error) => res.status(400).json({ error }));
@@ -123,15 +123,14 @@ exports.modifyUser = (req, res, next) => {
 //Modifier un mot de passe utilisateur
 exports.modifyPassword = (req, res, next) => {
   const id = JSON.parse(req.params.id);
-  const token = req.headers.authorization.split(" ")[1]; //On extrait le token de la requête
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN); //On décrypte le token grâce à la clé secrète
-  const userId = decodedToken.userId; //On récupère l'userId du token décrypté
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
+  const userId = decodedToken.userId;
   const password = req.body.password;
   if (id === userId) {
     User.findOne({ where: { id: id } })
       .then((user) => {
         if (!schema.validate(req.body.password)) {
-          //Vérifie si  le schema de mot de passe est pas respecté
           res.status(401).json({
             message:
               `Mot de passe pas assez sécurisé, il doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule, un symbole et ne pas contenir d'espace !`,
@@ -139,11 +138,11 @@ exports.modifyPassword = (req, res, next) => {
           return false;
         }
         bcrypt
-          .hash(password, 10) //On hash le mot de passe et on le sale 10 fois
+          .hash(password, 10)
           .then((hash) => {
             user
               .update({
-                password: hash, //le mot de passe crypté
+                password: hash,
                 id: req.params.id,
               })
               .then(() =>
@@ -161,16 +160,45 @@ exports.modifyPassword = (req, res, next) => {
   }
 };
 
-//afficher un profil utilisateur
+//Afficher un profil utilisateur
 exports.getOneProfile = (req, res, next) => {
   User.findOne({ where: { id: req.params.id } })
     .then((user) => res.status(200).json(user))
     .catch((error) => res.status(404).json({ error }));
 };
 
-//afficher tous les profils utilisateurs
+//Afficher tous les profils utilisateurs
 exports.getAllProfile = (req, res, next) => {
   User.findAll({ order: [[`username`, `ASC`]] })
     .then((users) => res.status(200).json(users))
     .catch((error) => res.status(404).json({ error }));
+};
+
+//Supprimer un utilisateur
+exports.deleteUser = (req, res, next) => {
+  const id = JSON.parse(req.params.id);
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
+  const userId = decodedToken.userId;
+  const isAdmin = decodedToken.is_admin;
+  if(id === userId || isAdmin === true){
+    User.findOne({ where: { id: id } })
+        .then(user => {
+          if (user.image !== null){
+            const fileName = user.image.split('/images/')[1];
+            fs.unlink(`images/${fileName}`, (err => {
+              if (err) console.log(err);
+              else {
+                console.log(`Image supprimée: ` + fileName);
+              }
+            }));
+          }
+          user.destroy({ where: { id: id } })
+              .then(() => res.status(200).json({  message: 'Utilisateur supprimé !' }))
+              .catch(error =>  res.status(400).json({ error }));
+        })
+        .catch(error => res.status(500).json({ error }));
+  }else {
+    return res.status(401).json({ error: `Vous n'avez pas l'autorisation nécessaire !` });
+  }
 };

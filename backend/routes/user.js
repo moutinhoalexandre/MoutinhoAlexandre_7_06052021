@@ -13,6 +13,7 @@ router.get("/profile/:id", multer, userCtrl.getOneProfile); //Affiche un profil 
 router.get("/profile/", multer, userCtrl.getAllProfile); //Affiche tous les profils utilisateurs
 router.put("/profile/:id", multer, userCtrl.modifyUser); //Modifier un utilisateur
 router.put("/profile/:id/password", multer, userCtrl.modifyPassword); //Modifier un mot de passe utilisateur
+router.delete("/profile/:id", multer, userCtrl.deleteUser); //Supprimer un utilisateur
 
 
 module.exports = router;
