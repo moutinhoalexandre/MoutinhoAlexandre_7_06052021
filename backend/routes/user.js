@@ -9,6 +9,7 @@ const authentificationLimiter = require("../middleware/authentificationLimiter")
 router.post("/signup", userCtrl.signup); //Créer un nouvel utilisateur
 router.post("/login", authentificationLimiter, userCtrl.login); //Login d'un utilisateur existant TODO:authenticationLimiter
 
+router.get("/profile/:id", multer, userCtrl.getOneProfile); //Affiche un profil utilisateur
 router.put("/profile/:id", multer, userCtrl.modifyUser); //Modifier un utilisateur
 router.put("/profile/:id/password", multer, userCtrl.modifyPassword); //Modifier un utilisateur
 

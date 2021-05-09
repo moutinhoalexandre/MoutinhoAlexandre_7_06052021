@@ -162,3 +162,10 @@ exports.modifyPassword = (req, res, next) => {
       .json({ error: "vous n'avez pas l'autorisation nécessaire !" });
   }
 };
+
+//afficher un profil utilisateur 
+exports.getOneProfile = (req, res, next) => {
+  User.findOne({ where: { id: req.params.id } })
+    .then((user) => res.status(200).json(user))
+    .catch((error) => res.status(404).json({ error }));
+};
