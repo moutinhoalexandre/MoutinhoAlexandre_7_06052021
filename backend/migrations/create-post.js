@@ -18,21 +18,21 @@ module.exports = {
         onDelete: "CASCADE",
       },
       content: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.TEXT,
       },
       image: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.STRING,
       },
       comments: {
         allowNull: true,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         defaultValue: 0,
       },
       likes: {
         allowNull: true,
-        type: Sequelize.TEXT,
+        type: Sequelize.INTEGER,
         defaultValue: 0,
       },
       createdAt: {
