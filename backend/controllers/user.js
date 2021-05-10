@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt"); //Permet de hasher et saler les mots de passe
 const jwt = require("jsonwebtoken"); //Permet de créer un token utilisateur
+const fs = require('fs'); //système de gestion de fichier de Node
+
 
 const { User } = require("../models/index");
 
