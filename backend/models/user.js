@@ -19,7 +19,7 @@ const User = database.define(
     bio: DataTypes.STRING,
     is_admin: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      defaultValue: false,
     },
   },
   {
