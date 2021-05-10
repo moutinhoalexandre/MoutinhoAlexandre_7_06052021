@@ -7,6 +7,8 @@ const postCtrl = require("../controllers/post"); // pour importer le controleur
 
 
 router.post("/", auth, multer, postCtrl.createPost);//Créer un post
+router.post('/:id', auth, multer, postCtrl.modifyPost);//Permet de modifier un post existant
+
 
 
 module.exports = router;
