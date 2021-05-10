@@ -9,9 +9,7 @@ exports.createPost = (req, res, next) => {
   const userId = decodedToken.userId; //On récupère l'userId du token décrypté
   Post.create({
     UserId: userId,
-    image: req.file
-      ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-      : null, //On génère l'url grâce à son nom de fichier
+    image: req.file? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`: null, //On génère l'url grâce à son nom de fichier
     content: req.body.content,
     likes: 0,
     comments: 0,
@@ -44,6 +42,35 @@ exports.modifyPost = (req, res, next) => {
         post.update( { ...req.body, id: req.params.id} )
         .then(() => res.status(200).json({ message: 'Votre post est modifié !' }))
         .catch(error => res.status(400).json({ error }));
+      }else {
+        return res.status(401).json({ error: "Vous n'avez pas l'autorisation nécessaire !" });
+      }
+    })
+    .catch(error => res.status(500).json({ error }));
+};
+
+//Supprimer un post
+exports.deletePost = (req, res, next) => {
+  const id = req.params.id;
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
+  const userId = decodedToken.userId;
+  const isAdmin = decodedToken.is_admin;
+  Post.findOne({ where: { id: id } })
+    .then(post => {
+      if(post.UserId == userId || isAdmin == true) {
+        if (post.image !== null){
+            const fileName = post.image.split('/images/')[1];
+            fs.unlink(`images/${fileName}`, (err => {
+                if (err) console.log(err);
+                else {
+                    console.log("Image supprimée: " + fileName);
+                }
+            }));
+        }
+        post.destroy({ where: { id: id } })
+          .then(() => res.status(200).json({  message: 'post supprimé !' }))
+          .catch(error => res.status(400).json({ error }));
       }else {
         return res.status(401).json({ error: "Vous n'avez pas l'autorisation nécessaire !" });
       }
