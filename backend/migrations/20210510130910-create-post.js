@@ -18,11 +18,11 @@ module.exports = {
         onDelete: "CASCADE",
       },
       content: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.TEXT,
       },
       image: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       comments: {
