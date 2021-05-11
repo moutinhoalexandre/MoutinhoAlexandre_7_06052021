@@ -84,3 +84,25 @@ exports.getOnePost = (req, res, next) => {
   .then(post => res.status(200).json(post))
   .catch(error => res.status(404).json({ error }));
 };
+
+//Afficher tous les posts
+exports.getAllPosts = (req, res, next) => {
+    Post.findAll({
+        include: [{
+            model: User
+        }, {
+            model: Comment,
+            include: [{
+                model: User
+            }],
+        }],
+        order: [[
+            "createdAt", "DESC"
+        ]]
+    })
+        .then(posts => res.status(200).json(posts))
+        .catch(error => {
+            console.log(error);
+            res.status(400).json({ error });
+        });
+};
