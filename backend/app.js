@@ -7,6 +7,7 @@ require("dotenv").config();
 //Importation des routes
 const postRoutes = require("./routes/post");
 const userRoutes = require("./routes/user");
+const commentRoutes = require("./routes/comment");
 
 const app = express(); //Applique le framework express
 app.use(helmet()); //Applique les sous-plugins de helmet
