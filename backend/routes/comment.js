@@ -6,7 +6,6 @@ const multer = require("../middleware/multer-config"); // pour importer le middl
 const commentCtrl = require("../controllers/comment"); // pour importer le controleur
 
 router.post("/", auth, multer, commentCtrl.createComment); //Créer un commentaire
-// router.post("/:id", auth, multer, postCtrl.modifyPost); //Modifie un post existant
-// router.delete("/:id", auth, postCtrl.deletePost); //Supprime un post existant
+router.delete("/:id", auth, commentCtrl.deleteComment); //Supprime un commentaire existant
 
 module.exports = router;
