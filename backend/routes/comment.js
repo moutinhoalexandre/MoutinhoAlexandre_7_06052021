@@ -7,5 +7,6 @@ const commentCtrl = require("../controllers/comment"); // pour importer le contr
 
 router.post("/", auth, multer, commentCtrl.createComment); //Créer un commentaire
 router.delete("/:id", auth, commentCtrl.deleteComment); //Supprime un commentaire existant
+router.get("/:id", auth, commentCtrl.getComments); //Supprime un commentaire existant
 
 module.exports = router;
