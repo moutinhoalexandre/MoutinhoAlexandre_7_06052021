@@ -8,6 +8,7 @@ require("dotenv").config();
 const postRoutes = require("./routes/post");
 const userRoutes = require("./routes/user");
 const commentRoutes = require("./routes/comment");
+const likeRoutes = require("./routes/like");
 
 const app = express(); //Applique le framework express
 app.use(helmet()); //Applique les sous-plugins de helmet
@@ -37,5 +38,6 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api/like", likeRoutes);
 
 module.exports = app;
