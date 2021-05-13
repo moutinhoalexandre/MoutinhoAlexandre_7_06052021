@@ -1,11 +1,8 @@
 const { User, Post, Comment, Like } = require("../models/index");
-const fs = require("fs"); //système de gestion de fichier de Node
-const jwt = require("jsonwebtoken");
+const identification = require("../utils/identification");
 
 exports.likePost = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-  const user = decodedToken.userId;
+  const userId = identification.userId(req);
   const isliked = req.body.like;
   const postId = req.params.id;
 
@@ -13,8 +10,8 @@ exports.likePost = (req, res, next) => {
     .then((post) => {
       if (!post) {
         return res.status(404).json({ error: "Post introuvable !" });
-      } else if (isliked === false) {
-        Like.create({ userId: user, postId: postId })
+      } else if (isliked === true) {
+        Like.create({ userId: userId, postId: postId })
           .then((like) => {
             post
               .update({ likes: post.likes + 1 })
@@ -24,10 +21,10 @@ exports.likePost = (req, res, next) => {
               );
           })
           .catch((error) => res.status(400).json({ error }));
-      } else if (isliked === true) {
+      } else if (isliked === false) {
         Like.destroy({
           where: {
-            userId: user,
+            userId: userId,
             PostId: postId,
           },
         })

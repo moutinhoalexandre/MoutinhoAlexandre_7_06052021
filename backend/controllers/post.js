@@ -1,12 +1,10 @@
 const { User, Post, Comment, Like } = require("../models/index");
 const fs = require("fs"); //système de gestion de fichier de Node
-const jwt = require("jsonwebtoken");
+const identification = require("../utils/identification");
 
 // Créer un post
 exports.createPost = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1]; //On extrait le token de la requête
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN); //On décrypte le token grâce à la clé secrète
-  const userId = decodedToken.userId; //On récupère l'userId du token décrypté
+  const userId = identification.userId(req);
   Post.create({
     UserId: userId,
     image: req.file? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`: null, //On génère l'url grâce à son nom de fichier
@@ -21,9 +19,7 @@ exports.createPost = (req, res, next) => {
 //Modifier un post
 exports.modifyPost = (req, res, next) => {
   const id = req.params.id;
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-  const userId = decodedToken.userId;
+  const userId = identification.userId(req);
   Post.findOne({ where: { id: id } })
     .then(post => {
       if(post.UserId === userId) {
@@ -52,10 +48,8 @@ exports.modifyPost = (req, res, next) => {
 //Supprimer un post
 exports.deletePost = (req, res, next) => {
   const id = req.params.id;
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-  const userId = decodedToken.userId;
-  const isAdmin = decodedToken.is_admin;
+  const userId = identification.userId(req);
+  const isAdmin = identification.isAdmin(req);
   Post.findOne({ where: { id: id } })
     .then(post => {
       if(post.UserId == userId || isAdmin == true) {

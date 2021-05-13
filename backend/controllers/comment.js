@@ -1,17 +1,14 @@
 const { User, Post, Comment, Like } = require("../models/index");
-const fs = require("fs");
-const jwt = require("jsonwebtoken");
+const identification = require("../utils/identification");
 
 //Commenter un post
 exports.createComment = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-  const user = decodedToken.userId;
+  const userId = identification.userId(req);
   const postId = req.body.postId;
   const content = req.body.content;
   if (content !== null) {
     Comment.create({
-      userId: user,
+      userId: userId,
       postId: postId,
       content: req.body.content,
     }),
@@ -36,9 +33,7 @@ exports.createComment = (req, res, next) => {
 //Supprimer un post
 exports.deleteComment = (req, res, next) => {
   const id= req.params.id;
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-  const userId = decodedToken.userId;
+  const userId = identification.userId(req);
   const isAdmin = decodedToken.is_admin;
   Comment.findOne({ where: { id: id } })
     .then(comment => {

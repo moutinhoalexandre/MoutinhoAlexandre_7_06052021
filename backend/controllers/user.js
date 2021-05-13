@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt"); //Permet de hasher et saler les mots de passe
 const jwt = require("jsonwebtoken"); //Permet de créer un token utilisateur
 const fs = require('fs'); //système de gestion de fichier de Node
-
+const identification = require('../utils/identification');
 
 const { User } = require("../models/index");
 
@@ -87,9 +87,7 @@ exports.login = (req, res, next) => {
 //Modifier un utilisateur
 exports.modifyUser = (req, res, next) => {
   const id = JSON.parse(req.params.id);
-  const token = req.headers.authorization.split(" ")[1]; //On extrait le token de la requête
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN); //On décrypte le token grâce à la clé secrète
-  const userId = decodedToken.userId; //On récupère l'userId du token décrypté
+  const userId = identification.userId(req);
   if (id === userId) {
     User.findOne({ where: { id: id } })
       .then((user) => {
@@ -125,9 +123,7 @@ exports.modifyUser = (req, res, next) => {
 //Modifier un mot de passe utilisateur
 exports.modifyPassword = (req, res, next) => {
   const id = JSON.parse(req.params.id);
-  const token = req.headers.authorization.split(" ")[1];
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-  const userId = decodedToken.userId;
+  const userId = identification.userId(req);
   const password = req.body.password;
   if (id === userId) {
     User.findOne({ where: { id: id } })
@@ -179,10 +175,8 @@ exports.getAllProfile = (req, res, next) => {
 //Supprimer un utilisateur
 exports.deleteUser = (req, res, next) => {
   const id = JSON.parse(req.params.id);
-  const token = req.headers.authorization.split(' ')[1];
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-  const userId = decodedToken.userId;
-  const isAdmin = decodedToken.is_admin;
+  const userId = identification.userId(req);
+  const isAdmin = identification.adminId(req);
   if(id === userId || isAdmin === true){
     User.findOne({ where: { id: id } })
         .then(user => {
