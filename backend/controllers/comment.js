@@ -7,13 +7,13 @@ exports.createComment = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
   const user = decodedToken.userId;
-  const postId = req.params.id;
+  const postId = req.body.postId;
   const content = req.body.content;
-  console.log(content);
+  console.log(user);
   if (content !== null) {
     Comment.create({
-      UserId: user,
-      PostId: postId,
+      userId: user,
+      postId: postId,
       content: req.body.content,
     }),
       Post.findOne({ where: { id: postId } }) //On sélectionne le post par son id
