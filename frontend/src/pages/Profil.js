@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function Profil() {
     return (
-        <div>
-            
-        </div>
-    )
+      <>
+        <h1>Hello de la page Profil</h1>
+      </>
+    );
 }
