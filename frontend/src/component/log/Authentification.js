@@ -6,19 +6,19 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
 export default function Authentification() {
-  const [signIn, setSignIn] = useState(false);
+  const [signUp, setSignUp] = useState(false);
 
-  const changeSignIn = () => {
-    setSignIn(!signIn);
+  const changeSignUp = () => {
+    setSignUp(!signUp);
   };
 
   return (
     <>
-      <div className={signIn ? "container sign-up-mode" : "container"}>
+      <div className={signUp ? "container " : "container sign-up-mode"}>
         <div className="forms-container">
           <div className="signin-signup">
             <SignIn />
-            <SignUp />
+            <SignUp func={changeSignUp}/>
           </div>
         </div>
 
@@ -33,7 +33,7 @@ export default function Authentification() {
               <button
                 className="btn transparent"
                 id="sign-up-btn"
-                onClick={changeSignIn}
+                onClick={changeSignUp}
               >
                 Sign up
               </button>
@@ -50,7 +50,7 @@ export default function Authentification() {
               <button
                 className="btn transparent"
                 id="sign-in-btn"
-                onClick={changeSignIn}
+                onClick={changeSignUp}
               >
                 Sign in
               </button>
