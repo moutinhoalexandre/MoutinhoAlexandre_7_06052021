@@ -24,7 +24,8 @@ form {
 }
 
 form.sign-in-form {
-  z-index: 2;
+  opacity: 0;
+  z-index: 1;
 }
 
 .title {
@@ -120,14 +121,14 @@ form.sign-in-form {
 
 /* ANIMATION */
 
-.container.sign-up-mode form.sign-up-form {
-  opacity: 1;
-  z-index: 2;
-}
-
-.container.sign-up-mode form.sign-in-form {
+.containers.sign-up-mode form.sign-up-form {
   opacity: 0;
   z-index: 1;
+}
+
+.containers.sign-up-mode form.sign-in-form {
+  opacity: 1;
+  z-index: 2;
 }
 
 

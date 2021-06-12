@@ -22,6 +22,8 @@ export default function SignIn() {
       .post("http://localhost:3000/api/auth/login", { email, password })
       .then((res) => {
         window.localStorage.setItem("token", res.data.token);
+        window.localStorage.setItem("userId", res.data.userId);
+        window.localStorage.setItem("is_admin", res.data.is_admin);
         window.location = "/Home";
       })
       .catch((err) => {

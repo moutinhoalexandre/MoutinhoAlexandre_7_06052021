@@ -24,8 +24,8 @@ form {
 }
 
 form.sign-up-form {
-  opacity: 0;
-  z-index: 1;
+  opacity: 1;
+  z-index: 2;
 }
 
 .title {
@@ -122,16 +122,21 @@ form.sign-up-form {
 
 /* ANIMATION */
 
-.container.sign-up-mode form.sign-up-form {
+.containers.sign-up-mode form.sign-up-form {
+  opacity: 0;
+  z-index: 1;
+}
+
+.containers.sign-up-mode form.sign-in-form {
   opacity: 1;
   z-index: 2;
 }
 
-.container.sign-up-mode .left-panel {
+.containers.sign-up-mode .left-panel {
   pointer-events: none;
 }
 
-.container.sign-up-mode .right-panel {
+.containers.sign-up-mode .right-panel {
   pointer-events: all;
 }
 
