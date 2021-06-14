@@ -40,20 +40,6 @@ export default function Authentification() {
                 Sign in
               </button>
             </div>
-            {/* <div className="content">
-              <h3>New here ?</h3>
-              <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Debitis, ex ratione. Aliquid!
-              </p>
-              <button
-                className="btn transparent"
-                id="sign-up-btn"
-                onClick={changeSignUp}
-              >
-                Sign up
-              </button>
-            </div> */}
             <img src={Logo} className="image" alt="" />
           </div>
           <div className="panel right-panel">
@@ -71,20 +57,6 @@ export default function Authentification() {
                 Sign up
               </button>
             </div>
-            {/* <div className="content">
-              <h3>One of us ?</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-                laboriosam ad deleniti.
-              </p>
-              <button
-                className="btn transparent"
-                id="sign-in-btn"
-                onClick={changeSignUp}
-              >
-                Sign in
-              </button>
-            </div> */}
             <img src={Logo} className="image" alt="" />
           </div>
         </div>

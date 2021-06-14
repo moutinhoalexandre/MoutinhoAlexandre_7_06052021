@@ -1,0 +1,26 @@
+.membres::after {
+    content: "";
+    display: block;
+    background-color:#f05837;
+    height: 3px;
+    width: 200px;
+    margin-bottom: 20px; }
+
+.last-post::after {
+    content: "";
+    display: block;
+    background-color:#f05837;
+    height: 3px;
+    width: 200px;
+    margin-bottom: 20px; }
+
+@media screen and (max-width: 991px) {
+    .member-list{
+        display: none;
+    } 
+}
+@media screen and (min-width: 992px) {
+    .member-list2{
+        display: none !important;
+    } 
+}
