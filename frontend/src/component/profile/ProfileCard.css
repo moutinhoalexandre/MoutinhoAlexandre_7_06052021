@@ -1,15 +1,23 @@
   
 .avatar {
     width: 130px;
-    margin-top: -50px;
     display: flex;
     align-items: center;
 }
 .avatar img{
     width: 100%;
     object-fit: cover;
+
+}
+.profile_card{
+    margin:10%;
+}
+.profile_card .col{
+     background: linear-gradient(45deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+    border-radius: 20px;
 }
 .profile_card h4 {
+    margin : 10%;
     font-weight: bold;
 }
 .link_profil {

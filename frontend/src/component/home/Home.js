@@ -4,6 +4,7 @@ import "./Home.css";
 // import Banner from "./Banner";
 // import Footer from "./Footer";
 import PostCard from "../post/PostCard";
+import ProfileCard from "../profile/ProfileCard";
 import axios from "axios";
 import { useState } from "react";
 
@@ -14,7 +15,7 @@ export default function Home() {
 
   const getAllProfile = () => {
     axios
-      .get("http://localhost:3000/api/auth/profile", {})
+      .get("http://localhost:3000/api/auth/profile")
       .then((res) => {
         setUsers(res.data);
       })
@@ -37,7 +38,6 @@ export default function Home() {
         },
       })
       .then((res) => {
-        console.log(res);
         setUser(res.data);
       })
       .catch((err) => {
@@ -69,13 +69,13 @@ export default function Home() {
 
   useEffect(() => {
     getAllProfile();
-    getOneProfile();
     getAllPosts();
-  }, []);
+getOneProfile() ;
+  },[]);
 
   // console.log(users)
-  // console.log(user);
-  console.log(posts);
+  console.log(user);
+  // console.log(posts);
 
   return (
     <div>
@@ -83,6 +83,10 @@ export default function Home() {
       <div className="row justify-content-center ">
         <div className="col-12 col-lg-3 ">
           <div>
+            <ProfileCard
+              name={user.username}
+              image={user.image}
+            />
           </div>
           <div className="membres fw-bold mb-2 ms-2 ">MEMBRES</div>
         </div>
@@ -90,9 +94,13 @@ export default function Home() {
         <div className="col-12 col-lg-9">
           <div className="last-post pt-3 pb-3 ms-2 fw-bold">DERNIERS POSTS</div>
           <div className=" post-list">
-            {posts.map(post => (
+            {posts.map((post) => (
               <div className="border rounded ms-2 mb-4 bg-white" key={post.id}>
-                <PostCard content={post.content} image={post.image} createdAt={post.createdAt}/>
+                <PostCard
+                  content={post.content}
+                  image={post.image}
+                  createdAt={post.createdAt}
+                />
               </div>
             ))}
           </div>

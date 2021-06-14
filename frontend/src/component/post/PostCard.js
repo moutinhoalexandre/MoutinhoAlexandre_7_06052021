@@ -4,7 +4,7 @@ import avatar from '../../assets/avatar.jpeg'
 export default function PostCard(props) {
     return (
       <>
-        <div className="card mb-3">
+        <div className="card">
           {props.image === null ? (
             <img className="card-img-top" src={avatar} alt="avatar" />
           ) : (
