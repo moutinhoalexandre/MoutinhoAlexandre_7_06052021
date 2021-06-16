@@ -43,23 +43,10 @@ export default function SignUp(props) {
           confirmButtonText: `SignIn`,
           confirmButtonColor: "#3085d6",
         }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             props.func();
           }
         });
-
-        // // .then((res) => {
-
-        // console.log(res);
-        // if (res.data.errors) {
-        //   console.log(res.data);
-        //   usernameError.innerHTML = res.data.errors.username;
-        //   emailError.innerHTML = res.data.errors.email;
-        //   passwordError.innerHTML = res.data.errors.password;
-        // } else {
-        //   setFormSubmit(true);
-        // }
       } catch (e) {
         Swal.fire({
           icon: "error",
@@ -67,9 +54,6 @@ export default function SignUp(props) {
           text: "Username ou email déjà utilisé!",
         });
       }
-
-      // })
-      // .catch((err) => console.log(err));
     }
   };
 

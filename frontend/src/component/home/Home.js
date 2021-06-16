@@ -1,23 +1,31 @@
 import React from "react";
 import { useEffect } from "react";
 import "./Home.css";
-// import Banner from "./Banner";
+import Navbar from "../navbar/NavBar";
 // import Footer from "./Footer";
 import PostCard from "../post/PostCard";
 import ProfileCard from "../profile/ProfileCard";
 import axios from "axios";
 import { useState } from "react";
 
+
 export default function Home() {
   const [users, setUsers] = useState();
   const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
 
-  const getAllProfile = () => {
+  const getOneProfile = () => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
     axios
-      .get("http://localhost:3000/api/auth/profile")
+      .get("http://localhost:3000/api/auth/profile/" + userId, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
-        setUsers(res.data);
+        setUser(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -27,18 +35,11 @@ export default function Home() {
       });
   };
 
-  const getOneProfile = () => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("userId");
-
+  const getAllProfile = () => {
     axios
-      .get("http://localhost:3000/api/auth/profile/"+user, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get("http://localhost:3000/api/auth/profile")
       .then((res) => {
-        setUser(res.data);
+        setUsers(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -68,26 +69,24 @@ export default function Home() {
   };
 
   useEffect(() => {
+    getOneProfile();
     getAllProfile();
     getAllPosts();
-getOneProfile() ;
-  },[]);
+  }, []);
 
-  // console.log(users)
+  console.log(users);
   console.log(user);
-  // console.log(posts);
+  console.log(posts);
 
   return (
     <div>
-      {/* <Banner /> */}
-      <div className="row justify-content-center ">
+      <Navbar />
+      <div className="row justify-content-center ms-2  ">
         <div className="col-12 col-lg-3 ">
           <div>
-            <ProfileCard
-              name={user.username}
-              image={user.image}
-            />
+            <ProfileCard name={user.username} image={user.image} />
           </div>
+
           <div className="membres fw-bold mb-2 ms-2 ">MEMBRES</div>
         </div>
 
@@ -100,6 +99,7 @@ getOneProfile() ;
                   content={post.content}
                   image={post.image}
                   createdAt={post.createdAt}
+                  postUsername={post.User.username}
                 />
               </div>
             ))}

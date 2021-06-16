@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Authentification from "./component/log/Authentification";
 import Home from "./component/home/Home";
-import Profil from "./component/profile/Profile";
+import Profile from "./component/profile/Profile";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Authentification} />
           <Route path="/home" component={Home} />
-          <Route path="/profil" component={Profil} />
+          <Route path="/profile" component={Profile} />
         </Switch>
       </Router>
     </>

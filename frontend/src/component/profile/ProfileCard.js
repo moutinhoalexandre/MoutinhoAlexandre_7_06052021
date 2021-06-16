@@ -11,14 +11,14 @@ function ProfileCard({ name, image }) {
             {image === null ? (
               <img
                 className="rounded-circle"
-                height="130px"
+
                 src={avatar}
                 alt="avatar"
               />
             ) : (
               <img
                 className="rounded-circle"
-                height="130px"
+
                 src={image}
                 alt="avatar"
               />
@@ -27,7 +27,7 @@ function ProfileCard({ name, image }) {
           <h4 className="mt-3">Bienvenue</h4>
           <div className="mb-4">{name}</div>
           <div className="fst-italic text-white">chez Groupomania</div>
-          <Link className="link_profil text-white" to="/profil">
+          <Link className="link_profil text-white" to="/profile">
             <div className="mt-4">
               <i className="bi bi-box-arrow-up-right me-2"></i>Voir mon profil
             </div>

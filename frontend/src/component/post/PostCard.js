@@ -17,7 +17,7 @@ export default function PostCard(props) {
                 {" "}
                 publié le{" "}
                 {new Date(props.createdAt).toLocaleDateString("fr-FR")} à{" "}
-                {new Date(props.createdAt).toLocaleTimeString("fr-FR")}
+                {new Date(props.createdAt).toLocaleTimeString("fr-FR")} par {props.postUsername}
               </span>
             </p>
           </div>
