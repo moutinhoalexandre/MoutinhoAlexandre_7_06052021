@@ -5,12 +5,15 @@ import Navbar from "../navbar/NavBar";
 // import Footer from "./Footer";
 import PostCard from "../post/PostCard";
 import ProfileCard from "../profile/ProfileCard";
+import ProfileCardMember from "../profile/ProfileCardMember"
 import axios from "axios";
+import button from "react-bootstrap/Button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 export default function Home() {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState([]);
 
@@ -74,9 +77,7 @@ export default function Home() {
     getAllPosts();
   }, []);
 
-  console.log(users);
-  console.log(user);
-  console.log(posts);
+
 
   return (
     <div>
@@ -88,9 +89,24 @@ export default function Home() {
           </div>
 
           <div className="membres fw-bold mb-2 ms-2 ">MEMBRES</div>
+          <div>
+            {users.map((user) => (
+              <ProfileCardMember user={user} />
+            ))}
+          </div>
         </div>
 
         <div className="col-12 col-lg-9">
+          <Link to="/Post" className="link">
+            <div className="d-flex justify-content-center">
+              <button
+                className="bouton btn-sm mx-5 "
+                // onClick={handleSubmitModification}
+              >
+                Publier un post
+              </button>
+            </div>
+          </Link>
           <div className="last-post pt-3 pb-3 ms-2 fw-bold">DERNIERS POSTS</div>
           <div className=" post-list">
             {posts.map((post) => (
@@ -100,6 +116,9 @@ export default function Home() {
                   image={post.image}
                   createdAt={post.createdAt}
                   postUsername={post.User.username}
+                  postId={post.id}
+                  userId={post.userId}
+                  comments={post.comments}
                 />
               </div>
             ))}

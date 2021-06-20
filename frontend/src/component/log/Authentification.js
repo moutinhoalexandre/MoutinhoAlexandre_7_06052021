@@ -12,8 +12,6 @@ export default function Authentification() {
     setSignUp(!signUp);
   };
 
-  // TODO : changer signUp signIn
-
   return (
     <>
       <div className={signUp ? "containers " : "containers sign-up-mode "}>
@@ -33,7 +31,7 @@ export default function Authentification() {
                 laboriosam ad deleniti.
               </p>
               <button
-                className="btn transparent"
+                className="boutton transparent"
                 id="sign-in-btn"
                 onClick={changeSignUp}
               >
@@ -50,7 +48,7 @@ export default function Authentification() {
                 Debitis, ex ratione. Aliquid!
               </p>
               <button
-                className="btn transparent"
+                className="boutton transparent"
                 id="sign-up-btn"
                 onClick={changeSignUp}
               >

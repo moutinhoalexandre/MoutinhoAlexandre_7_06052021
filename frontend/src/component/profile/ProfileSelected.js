@@ -6,24 +6,27 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import button from "react-bootstrap/Button";
 import avatar from "../../assets/avatar.jpeg";
+import { useLocation } from "react-router-dom";
 
-export default function Profile() {
-  //   const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState([]);
-  const [displayModification, setDisplayModification] = useState(true);
-  const [displayModificationPassword, setDisplayModificationPassword] =
-    useState(true);
+export default function ProfileSelected({ match, props }) {
+  const location = useLocation(props);
+  const userId = location.state?.userId;
+  console.log(userId);
+    const [user, setUser] = useState([]);
+        const isAdmin = localStorage.getItem("is_admin");
+  //   const [displayModification, setDisplayModification] = useState(true);
+  //   const [displayModificationPassword, setDisplayModificationPassword] =
+  //     useState(true);
 
-  const changeDisplayModification = () => {
-    setDisplayModification(!displayModification);
-  };
-  const changeDisplayModificationPassword = () => {
-    setDisplayModificationPassword(!displayModificationPassword);
-  };
+  //   const changeDisplayModification = () => {
+  //     setDisplayModification(!displayModification);
+  //   };
+  //   const changeDisplayModificationPassword = () => {
+  //     setDisplayModificationPassword(!displayModificationPassword);
+  //   };
 
   const getOneProfile = () => {
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
 
     axios
       .get("http://localhost:3000/api/auth/profile/" + userId, {
@@ -118,7 +121,7 @@ export default function Profile() {
                 />
               )}
             </div>
-            <div className="text-center mt-4">
+            {/* <div className="text-center mt-4">
               <label className="label-file text-white mb-3" htmlFor="image">
                 Choisir une image
               </label>
@@ -130,7 +133,7 @@ export default function Profile() {
                 accept="image/*"
                 onChange={handleSubmit}
               ></input>
-            </div>
+            </div> */}
             {/* <div className="text-center">
               <button
                 type="submit"
@@ -155,33 +158,28 @@ export default function Profile() {
                   title="Modifier le poste"
                 ></i>
               </div>
-
-              <div className="border-bottom text-white mb-2">Mon compte</div>
-              <button
-                className="button-file btn btn-sm mx-5 text-white"
-                onClick={changeDisplayModification}
+              <div
+                className={
+                  isAdmin === "true"
+                    ? ""
+                    : "displayNone"
+                }
               >
-                Modifier mon compte
-              </button>
-              <button
-                className="button-file btn btn-sm mx-5 text-white"
-                onClick={changeDisplayModificationPassword}
-              >
-                Modifier mon password
-              </button>
-              <div className="button-file btn btn-outline-success btn-sm mx-5 text-white">
-                Supprimer mon compte
+                <div className="border-bottom text-white mb-2">Mon compte</div>
+                <div className="button-file btn btn-outline-success btn-sm mx-5 text-white">
+                  Supprimer le compte
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <ProfileUpdate
+      {/* <ProfileUpdate
         funcModification={changeDisplayModification}
         funcPassword={changeDisplayModificationPassword}
         modProfile={displayModification}
         modPassword={displayModificationPassword}
-      />
+      /> */}
     </>
   );
 }

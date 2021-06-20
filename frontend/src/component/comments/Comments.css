@@ -1,0 +1,25 @@
+.iconeTime{
+    position: absolute;
+    right: 1%;
+    top:5%;
+
+}
+
+.fontIconeTime{
+    font-size:1.5rem;
+color : red;
+        cursor: pointer;
+}
+
+.iconeExclamation{
+    position: absolute;
+    right: 5%;
+    top:2%;
+    font-size:20px !important;
+}
+
+.fontIconeExclamation{
+    font-size:1rem;
+    color :cadetblue;
+        cursor: pointer;
+}

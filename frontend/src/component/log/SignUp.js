@@ -109,7 +109,7 @@ export default function SignUp(props) {
             onChange={(e) => setControlPassword(e.target.value)}
           />
         </div>
-        <input type="submit" className="btn" value="Sign up" />
+        <input type="submit" className="boutton" value="Sign up" />
         <p className="social-text">
           Coming Soon : sign in with social platforms
         </p>

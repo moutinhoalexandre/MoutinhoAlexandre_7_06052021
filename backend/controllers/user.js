@@ -44,6 +44,7 @@ exports.signup = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10) //On hash le mot de passe et on le sale 10 fois
     .then((hash) => {
+      delete req.body.password;
       User.create({
         username: req.body.username,
         email: req.body.email,
@@ -73,7 +74,7 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user.id,
-            token: jwt.sign({ userId: user.id }, process.env.JWT_SECRET_TOKEN, {
+            token: jwt.sign({ userId: user.id, is_admin: user.is_admin }, process.env.JWT_SECRET_TOKEN, {
               expiresIn: "24h",
             }),
             is_admin: user.is_admin,
@@ -176,8 +177,8 @@ exports.getAllProfile = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
   const id = JSON.parse(req.params.id);
   const userId = identification.userId(req);
-  const isAdmin = identification.adminId(req);
-  if(id === userId || isAdmin === true){
+  const isAdmin = identification.isAdmin(req);
+  if(id === userId || isAdmin ){
     User.findOne({ where: { id: id } })
         .then(user => {
           if (user.image !== null){
@@ -195,6 +196,6 @@ exports.deleteUser = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
   }else {
-    return res.status(401).json({ error: `Vous n'avez pas l'autorisation nécessaire !` });
+    return res.status(401).json({ error: `Vous n'avez pas l'autorisation nécessaire !`, });
   }
 };

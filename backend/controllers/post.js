@@ -7,7 +7,9 @@ exports.createPost = (req, res, next) => {
   const userId = identification.userId(req);
   Post.create({
     UserId: userId,
-    image: req.file? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`: null, //On génère l'url grâce à son nom de fichier
+    image: req.file
+      ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+      : "http://localhost:3000/images/noImage.png", //On génère l'url grâce à son nom de fichier
     content: req.body.content,
     likes: 0,
     comments: 0,
@@ -50,9 +52,11 @@ exports.deletePost = (req, res, next) => {
   const id = req.params.id;
   const userId = identification.userId(req);
   const isAdmin = identification.isAdmin(req);
+  
   Post.findOne({ where: { id: id } })
     .then(post => {
-      if(post.UserId == userId || isAdmin == true) {
+      console.log(isAdmin)
+      if(post.UserId == userId || isAdmin) {
         if (post.image !== null){
             const fileName = post.image.split('/images/')[1];
             fs.unlink(`images/${fileName}`, (err => {
@@ -66,10 +70,10 @@ exports.deletePost = (req, res, next) => {
           .then(() => res.status(200).json({  message: 'post supprimé !' }))
           .catch(error => res.status(400).json({ error }));
       }else {
-        return res.status(401).json({ error: "Vous n'avez pas l'autorisation nécessaire !" });
+        return res.status(401).json({ error: "Vous n'avez pas l'autorisation nécessaire pour supprimer le post  !" + console.log(userId) });
       }
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ error  }));
 };
 
 //Afficher un post

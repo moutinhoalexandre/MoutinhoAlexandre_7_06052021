@@ -64,7 +64,7 @@ export default function SignIn() {
             required
           />
         </div>
-        <input type="submit" value="Login" className="btn solid" />
+        <input type="submit" value="Login" className="boutton solid" />
         <p className="social-text">
           Coming Soon : sign in with social platforms
         </p>

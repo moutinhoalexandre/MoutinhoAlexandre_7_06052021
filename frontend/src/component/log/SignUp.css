@@ -100,7 +100,7 @@ form.sign-up-form {
   border-color: #4481eb;
 }
 
-.btn {
+.boutton {
   width: 150px;
   background: linear-gradient(45deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
   border: none;
@@ -115,7 +115,7 @@ form.sign-up-form {
   transition: 0.5s;
 }
 
-.btn:hover {
+.boutton:hover {
   background-color: #4d84e2;
 }
 

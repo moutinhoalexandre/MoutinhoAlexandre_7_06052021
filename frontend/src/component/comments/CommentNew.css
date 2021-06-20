@@ -1,0 +1,27 @@
+.bouton {
+    text-transform: none ;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    color: black ;
+    background-color: white !important;
+    border: 0.3rem solid rgba(9, 9, 121, 1);
+    border-radius: 5px;
+    transition:0.5s;
+    margin-bottom: 2%;
+}
+
+.bouton:hover {
+background: linear-gradient(
+    45deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  )!important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.newComment{
+      border-radius: 20px !important;
+}

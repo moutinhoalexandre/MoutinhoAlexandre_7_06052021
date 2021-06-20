@@ -5,7 +5,10 @@ const Post = database.define(
   "Post",
   {
     content: DataTypes.TEXT,
-    image: DataTypes.STRING,
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     comments: DataTypes.INTEGER,
     likes: DataTypes.INTEGER,
   },

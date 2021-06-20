@@ -76,7 +76,7 @@ exports.getComments = (req, res, next) => {
         model: User,
       },
     ],
-    order: [["createdAt", "ASC"]],
+    order: [["createdAt", "DESC"]],
   }) //On récupère le post correspondant à l'id
     .then((comment) => res.status(200).json(comment))
     .catch((error) => res.status(404).json({ error }));
