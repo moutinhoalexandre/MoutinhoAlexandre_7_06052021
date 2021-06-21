@@ -6,9 +6,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import button from "react-bootstrap/Button";
 import avatar from "../../assets/avatar.jpeg";
+import Swal from "sweetalert2";
 
 export default function Profile() {
-  //   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState([]);
   const [displayModification, setDisplayModification] = useState(true);
   const [displayModificationPassword, setDisplayModificationPassword] =
@@ -19,6 +19,41 @@ export default function Profile() {
   };
   const changeDisplayModificationPassword = () => {
     setDisplayModificationPassword(!displayModificationPassword);
+  };
+
+  const deleteProfil = () => {
+    Swal.fire({
+      title: "Êtes-vous sûr(e) ?",
+      text: "Une fois supprimé, vous ne pourrez plus récupérez votre profil",
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: "Supprimer",
+      denyButtonText: "Annuler",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
+
+        axios
+          .delete("http://localhost:3000/api/auth/profile/" + userId, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            localStorage.clear();
+            return (window.location.href = "/");
+          })
+          .catch((err) => {
+            console.log(err);
+            window.alert(
+              "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
+            );
+          });
+      }
+    });
   };
 
   const getOneProfile = () => {
@@ -64,7 +99,6 @@ export default function Profile() {
 
   useEffect(() => {
     getOneProfile();
-    // getAllPostsById();
   }, []);
 
   const handleSubmit = (e) => {
@@ -158,20 +192,18 @@ export default function Profile() {
 
               <div className="border-bottom text-white mb-2">Mon compte</div>
               <button
-                className="button-file btn btn-sm mx-5 text-white"
+                className="bouton btn btn-sm mx-5"
                 onClick={changeDisplayModification}
               >
                 Modifier mon compte
               </button>
               <button
-                className="button-file btn btn-sm mx-5 text-white"
+                className="bouton btn btn-sm mx-5"
                 onClick={changeDisplayModificationPassword}
               >
                 Modifier mon password
               </button>
-              <div className="button-file btn btn-outline-success btn-sm mx-5 text-white">
-                Supprimer mon compte
-              </div>
+              <div className="bouton btn btn-sm mx-5" onClick={deleteProfil}>Supprimer mon compte</div>
             </div>
           </div>
         </div>

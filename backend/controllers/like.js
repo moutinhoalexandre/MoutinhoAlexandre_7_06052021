@@ -4,13 +4,14 @@ const identification = require("../utils/identification");
 exports.likePost = (req, res, next) => {
   const userId = identification.userId(req);
   const isliked = req.body.like;
+  console.log(isliked)
   const postId = req.params.id;
 
   Post.findOne({ where: { id: postId } })
     .then((post) => {
       if (!post) {
         return res.status(404).json({ error: "Post introuvable !" });
-      } else if (isliked === true) {
+      } else if (isliked) {
         Like.create({ userId: userId, postId: postId })
           .then((like) => {
             post
@@ -21,7 +22,7 @@ exports.likePost = (req, res, next) => {
               );
           })
           .catch((error) => res.status(400).json({ error }));
-      } else if (isliked === false) {
+      } else if (!isliked) {
         Like.destroy({
           where: {
             userId: userId,
@@ -43,3 +44,11 @@ exports.likePost = (req, res, next) => {
     })
     .catch((error) => res.status(400).json({ message: "erreur destroy" }));
 };
+
+//recupérer tous les likes d'un post
+exports.getLike = (req, res, next) => {
+  Like.findAll({ where: { postId: req.params.id } }) //On récupère le post correspondant à l'id
+    .then((like) => res.status(200).json(like))
+    .catch((error) => res.status(404).json({ error }));
+};
+

@@ -91,7 +91,7 @@ export default function Home() {
           <div className="membres fw-bold mb-2 ms-2 ">MEMBRES</div>
           <div>
             {users.map((user) => (
-              <ProfileCardMember user={user} />
+              <ProfileCardMember user={user} key={user.id} />
             ))}
           </div>
         </div>
@@ -119,6 +119,7 @@ export default function Home() {
                   postId={post.id}
                   userId={post.userId}
                   comments={post.comments}
+                  likes={post.likes}
                 />
               </div>
             ))}

@@ -7,23 +7,14 @@ import axios from "axios";
 import button from "react-bootstrap/Button";
 import avatar from "../../assets/avatar.jpeg";
 import { useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function ProfileSelected({ match, props }) {
   const location = useLocation(props);
   const userId = location.state?.userId;
   console.log(userId);
-    const [user, setUser] = useState([]);
-        const isAdmin = localStorage.getItem("is_admin");
-  //   const [displayModification, setDisplayModification] = useState(true);
-  //   const [displayModificationPassword, setDisplayModificationPassword] =
-  //     useState(true);
-
-  //   const changeDisplayModification = () => {
-  //     setDisplayModification(!displayModification);
-  //   };
-  //   const changeDisplayModificationPassword = () => {
-  //     setDisplayModificationPassword(!displayModificationPassword);
-  //   };
+  const [user, setUser] = useState([]);
+  const isAdmin = localStorage.getItem("is_admin");
 
   const getOneProfile = () => {
     const token = localStorage.getItem("token");
@@ -45,58 +36,40 @@ export default function ProfileSelected({ match, props }) {
       });
   };
 
-  //TODO: modifier fonction pour getAllProfileById
-  //   const getAllPosts = () => {
-  //     const token = localStorage.getItem("token");
-  //     axios
-  //       .get("http://localhost:3000/api/post", {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       })
-  //       .then((res) => {
-  //         setPosts(res.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         alert(
-  //           "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
-  //         );
-  //       });
-  //   };
-
+  const deleteProfil = () => {
+    Swal.fire({
+      title: "Êtes-vous sûr(e) ?",
+      text: "Une fois supprimé, vous ne pourrez plus récupérez votre profil",
+      icon: "warning",
+      showDenyButton: true,
+      confirmButtonText: "Supprimer",
+      denyButtonText: "Annuler",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const token = localStorage.getItem("token");
+        axios
+          .delete("http://localhost:3000/api/auth/profile/" + userId, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            return (window.location.href = "/home");
+          })
+          .catch((err) => {
+            console.log(err);
+            window.alert(
+              "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
+            );
+          });
+      }
+    });
+  };
   useEffect(() => {
     getOneProfile();
-    // getAllPostsById();
   }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    const imagedata = document.querySelector('input[type="file"]').files[0];
-    formData.append("image", imagedata);
-
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
-
-    axios
-      .put("http://localhost:3000/api/auth/profile/" + userId, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-        window.alert(
-          "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
-        );
-      });
-  };
 
   return (
     <>
@@ -158,15 +131,9 @@ export default function ProfileSelected({ match, props }) {
                   title="Modifier le poste"
                 ></i>
               </div>
-              <div
-                className={
-                  isAdmin === "true"
-                    ? ""
-                    : "displayNone"
-                }
-              >
+              <div className={isAdmin === "true" ? "" : "displayNone"}>
                 <div className="border-bottom text-white mb-2">Mon compte</div>
-                <div className="button-file btn btn-outline-success btn-sm mx-5 text-white">
+                <div className="bouton btn btn-sm mx-5" onClick={deleteProfil}>
                   Supprimer le compte
                 </div>
               </div>
@@ -174,12 +141,6 @@ export default function ProfileSelected({ match, props }) {
           </div>
         </div>
       </div>
-      {/* <ProfileUpdate
-        funcModification={changeDisplayModification}
-        funcPassword={changeDisplayModificationPassword}
-        modProfile={displayModification}
-        modPassword={displayModificationPassword}
-      /> */}
     </>
   );
 }

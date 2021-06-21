@@ -111,12 +111,16 @@ export default function PostSelected({ match, props }) {
         <div className=" col-10 col-lg-8 mt-5 mx-5 mb-3 rounded ">
           <div className="card">
             <div className="d-flex justify-content-center">
-              <img
+              {post.image === null ? (
+                <div></div>
+              ) : (<img
                 className="img-fluid"
                 key={"image" + postId}
                 src={post.image}
                 alt="avatar"
               />
+              )}
+
             </div>
             <div className="card-body">
               <h5 className="card-title" key={"content" + postId}>

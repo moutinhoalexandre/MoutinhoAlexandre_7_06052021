@@ -1,6 +1,10 @@
 #content{
     width: 100%;
 }
+
+.formDimension{
+    width: 100%;
+}
 .attachments{
     text-align: right;
 }

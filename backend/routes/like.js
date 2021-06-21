@@ -6,5 +6,6 @@ const multer = require("../middleware/multer-config"); // pour importer le middl
 const likeCtrl = require("../controllers/like"); // pour importer le controleur
 
 router.post("/post/:id", auth, likeCtrl.likePost); //like un post
+router.get("/post/:id", auth, likeCtrl.getLike); //Récupérer les like d'un post
 
 module.exports = router;

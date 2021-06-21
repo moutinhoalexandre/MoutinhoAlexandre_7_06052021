@@ -5,17 +5,28 @@ const identification = require("../utils/identification");
 // Créer un post
 exports.createPost = (req, res, next) => {
   const userId = identification.userId(req);
+  if (
+    typeof req.file === "undefined" &&
+    req.body.content.length === 0
+  ) {
+    return res
+      .status(400)
+      .json({ errormessage: "Veuillez saisir une image ou un texte" });
+  }
   Post.create({
     UserId: userId,
     image: req.file
       ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-      : "http://localhost:3000/images/noImage.png", //On génère l'url grâce à son nom de fichier
+      : null, //On génère l'url grâce à son nom de fichier
     content: req.body.content,
     likes: 0,
     comments: 0,
   })
     .then(() => res.status(201).json({ message: "Post enregistré !" }))
-    .catch((error) => res.status(400).json({ error }));
+    .catch((error) => {
+      console.log(error.message)
+      return res.status(400).json({ error })
+    });
 };
 
 //Modifier un post
