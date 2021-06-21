@@ -9,45 +9,50 @@ export default function Post() {
   const [post, setPost] = useState();
   const [modification, setModification] = useState({ content: "" });
   const [selectImage, setSelectImage] = useState(false);
+  const [formDataEmpty, setFormDataEmpty] = useState(false);
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setModification({ ...modification, [name]: value });
+             setFormDataEmpty(!formDataEmpty);
   };
 
   const changeSelectImage = () => {
     setSelectImage(!selectImage);
+         setFormDataEmpty(!formDataEmpty);
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+   e.preventDefault();
 
-    const formData = new FormData();
-    const imagedata = document.querySelector('input[type="file"]').files[0];
-    if (selectImage) {
-      formData.append("image", imagedata);
-    }
-    formData.append("content", modification.content);
-
-    const token = localStorage.getItem("token");
-
-    axios
-      .post("http://localhost:3000/api/post", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        window.location = "/Home";
-      })
-      .catch((err) => {
-        console.log(err);
-        window.alert(
-          "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
-        );
-      });
+   const formData = new FormData();
+   const imagedata = document.querySelector('input[type="file"]').files[0];
+   if (selectImage) {
+     formData.append("image", imagedata);
+   }
+  
+   formData.append("content", modification.content);
+    if (formDataEmpty === false) { alert("Attention") } else {
+  
+      const token = localStorage.getItem("token");
+      axios
+        .post("http://localhost:3000/api/post", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          window.location = "/Home";
+        })
+        .catch((err) => {
+          console.log(err);
+          window.alert(
+            "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
+          );
+        });
+}
   };
 
   return (

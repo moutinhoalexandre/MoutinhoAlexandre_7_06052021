@@ -14,6 +14,7 @@ export default function Profile() {
   const [displayModificationPassword, setDisplayModificationPassword] =
     useState(true);
 
+
   const changeDisplayModification = () => {
     setDisplayModification(!displayModification);
   };

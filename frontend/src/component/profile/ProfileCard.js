@@ -4,6 +4,7 @@ import avatar from "../../assets/avatar.jpeg";
 
 function ProfileCard({ name, image }) {
   return (
+
     <div className="profile_card ms-2 ">
       <div className="col bg-dark p-3 mb-4">
         <div className="text-center text-white">
@@ -35,6 +36,7 @@ function ProfileCard({ name, image }) {
         </div>
       </div>
     </div>
+
   );
 }
 export default ProfileCard;

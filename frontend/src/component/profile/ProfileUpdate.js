@@ -3,10 +3,13 @@ import "./Profile.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
+import Swal from "sweetalert2";
 
 export default function ProfileUpdate(props) {
   const [user, setUser] = useState([]);
   const [modification, setModification] = useState([]);
+    const [password, setPassword] = useState("");
+    const [controlPassword, setControlPassword] = useState("");
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -38,7 +41,45 @@ export default function ProfileUpdate(props) {
   };
 
 
-    
+    const handleRegisterPassword = async (e) => {
+      e.preventDefault();
+      if (password !== controlPassword) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Les passwords ne correspondent pas !!",
+        });
+      } else {
+        try {
+                  const token = localStorage.getItem("token");
+                  const userId = localStorage.getItem("userId");
+          const res = await axios.put(
+            "http://localhost:3000/api/auth/profile/" + userId + "/password",
+            { password: password },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          Swal.fire({
+            title: "Changement de password réussie",
+            confirmButtonText: `Ok`,
+            confirmButtonColor: "#3085d6",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        } catch (e) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Username ou email déjà utilisé!",
+          });
+        }
+      }
+    };
     
     
   return (
@@ -78,13 +119,13 @@ export default function ProfileUpdate(props) {
               </Form.Group>
               <div className="form-submit">
                 <button
-                  className="button-file btn btn-outline-success btn-sm mx-5 text-white"
+                  className="bouton btn btn-outline-success btn-sm mx-5 "
                   onClick={props.funcModification}
                 >
                   Annuler
                 </button>
                 <button
-                  className="button-file btn btn-outline-success btn-sm mx-5 text-white"
+                  className="bouton btn btn-outline-success btn-sm mx-5 "
                   onClick={handleSubmitModification}
                 >
                   Enregistrer
@@ -99,36 +140,36 @@ export default function ProfileUpdate(props) {
           <div className="col-10 col-lg-8 mt-5 mx-5 mb-3 rounded bg-profile text-center text-white">
             <h5 className="mt-4">Modifiez votre password</h5>
             <form>
-              <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Group controlId="formBasicPassword">
                 <Form.Label className="form-label">Nouveau password</Form.Label>
                 <Form.Control
-                  as="textarea"
+                  type="password"
                   rows={1}
                   name="password"
                   value={user.bio}
-                  // onChange={handleChangeUsername}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <Form.Label className="form-label">
                   Confirmez nouveau password
                 </Form.Label>
                 <Form.Control
-                  as="textarea"
+                  type="password"
                   rows={1}
                   name="bio"
                   value={user.bio}
-                  // onChange={handleChangeUsername}
+                  onChange={(e) => setControlPassword(e.target.value)}
                 />
               </Form.Group>
               <div className="form-submit">
                 <button
-                  className="button-file btn btn-outline-success btn-sm mx-5 text-white"
+                  className="bouton btn btn-outline-success btn-sm mx-5 "
                   onClick={props.funcPassword}
                 >
                   Annuler
                 </button>
                 <button
-                  className="button-file btn btn-outline-success btn-sm mx-5 text-white"
-                  // onClick={handleSubmit}
+                  className="bouton btn btn-outline-success btn-sm mx-5 "
+                  onClick={handleRegisterPassword}
                 >
                   Enregistrer
                 </button>

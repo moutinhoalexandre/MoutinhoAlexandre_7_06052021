@@ -8,16 +8,22 @@ import { useState, useEffect } from "react";
 import button from "react-bootstrap/Button";
 import "./PostSelected.css";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTimes,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function PostSelected({ match, props }) {
   const [post, setPost] = useState([]);
+    const [comments, setComments] = useState([]);
   const location = useLocation(props);
   const postId = location.state?.postId;
   const username = location.state?.username;
   const userId = location.state?.userId;
   const localUserId = localStorage.getItem("userId");
-    const isAdmin = localStorage.getItem("is_admin");
-    console.log(postId)
+  const isAdmin = localStorage.getItem("is_admin");
+
 
   const getOnePost = () => {
     const token = localStorage.getItem("token");
@@ -76,9 +82,6 @@ export default function PostSelected({ match, props }) {
     getOnePost();
   }, []);
 
-    const [comments, setComments] = useState([]);
-    
-    console.log(comments)
 
 
   const getAllComments = () => {
@@ -104,6 +107,26 @@ export default function PostSelected({ match, props }) {
     getAllComments();
   }, []);
 
+  const report = () => {
+    Swal.fire({
+      title: "Voulez-vous signaler ce post ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          "Le post a été signalé!",
+          "Un modérateur va rapidement s'en occupé.",
+          "success"
+        );
+      }
+    });
+  };
+
   return (
     <>
       <NavBar />
@@ -113,17 +136,24 @@ export default function PostSelected({ match, props }) {
             <div className="d-flex justify-content-center">
               {post.image === null ? (
                 <div></div>
-              ) : (<img
-                className="img-fluid"
-                key={"image" + postId}
-                src={post.image}
-                alt="avatar"
-              />
+              ) : (
+                <img
+                  className="img-fluid"
+                  key={"image" + postId}
+                  src={post.image}
+                  alt="avatar"
+                />
               )}
-
             </div>
             <div className="card-body">
               <h5 className="card-title" key={"content" + postId}>
+              <i className="iconeExclamationPost">
+                <FontAwesomeIcon
+                  icon={faExclamationTriangle}
+                  className="fontExclamation"
+                  onClick={report}
+                />
+              </i>
                 {post.content}
               </h5>
               <p className="card-text">

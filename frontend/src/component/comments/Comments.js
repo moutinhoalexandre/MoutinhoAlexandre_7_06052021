@@ -45,6 +45,22 @@ export default function Comments(props) {
         }
       });
     };
+  
+  const report = () => {
+    Swal.fire({
+      title: "Voulez-vous signaler ce commentaire ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Le commentaire a été signalé!", "Un modérateur va rapidement s'en occupé.", "success");
+      }
+    });
+  }
  
     return (
       <div>
@@ -73,6 +89,7 @@ export default function Comments(props) {
               <FontAwesomeIcon
                 icon={faExclamationTriangle}
                 className="fontIconeExclamation"
+                onClick={report}
               />
             </i>
           </div>

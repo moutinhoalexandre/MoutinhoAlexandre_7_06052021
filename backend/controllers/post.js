@@ -11,7 +11,7 @@ exports.createPost = (req, res, next) => {
   ) {
     return res
       .status(400)
-      .json({ errormessage: "Veuillez saisir une image ou un texte" });
+      .json({ errormessage: "Veuillez choisir une image ou saisir un texte" });
   }
   Post.create({
     UserId: userId,

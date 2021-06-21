@@ -14,7 +14,32 @@ export default function PostCard(props) {
     const userId = props.userId
     const [likes, setLikes] = useState([]);
   const [isLiked, setIsLiked] = useState(true);
+  const [comments, setComments] = useState([]);
+  
+const getAllComments = () => {
+  const token = localStorage.getItem("token");
 
+  axios
+    .get("http://localhost:3000/api/comment/" + postId, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      setComments(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+      window.alert(
+        "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
+      );
+    });
+};
+useEffect(() => {
+  getAllComments();
+}, []);
+  
+  
 const getLikes = () => {
   const token = localStorage.getItem("token");
     const userID = Number(localStorage.getItem("userId"));
@@ -94,7 +119,7 @@ const getLikes = () => {
             </p>
             <div>
               {" "}
-              {props.comments}
+              {comments.length}
               <FontAwesomeIcon icon={faComments} className="comment" />
             </div>
             <div>

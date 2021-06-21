@@ -89,7 +89,7 @@ export default function Home() {
           </div>
 
           <div className="membres fw-bold mb-2 ms-2 ">MEMBRES</div>
-          <div>
+          <div className="row">
             {users.map((user) => (
               <ProfileCardMember user={user} key={user.id} />
             ))}
