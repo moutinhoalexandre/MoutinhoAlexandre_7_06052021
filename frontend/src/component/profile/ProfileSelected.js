@@ -167,7 +167,7 @@ export default function ProfileSelected({ match, props }) {
                       postId={post.id}
                       userId={post.userId}
                       comments={post.comments}
-                      likes={post.likes}
+                      liked={post.likes}
                     />
                   </div>
                 ))}

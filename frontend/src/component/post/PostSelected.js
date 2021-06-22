@@ -6,7 +6,7 @@ import CommentNew from "../comments/CommentNew";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import button from "react-bootstrap/Button";
+import Moment from "react-moment";
 import "./PostSelected.css";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -232,11 +232,9 @@ export default function PostSelected({ match, props }) {
               </h5>
               <p className="card-text">
                 <span className="date_post text-muted" key={"date" + postId}>
-                  {" "}
-                  publié le{" "}
-                  {new Date(post.createdAt).toLocaleDateString("fr-FR")} à{" "}
-                  {new Date(post.createdAt).toLocaleTimeString("fr-FR")} par{" "}
-                  {username}
+                  Posté par {username}
+                  {", "}
+                  <Moment fromNow>{post.createdAt}</Moment>
                 </span>
               </p>
               <div>

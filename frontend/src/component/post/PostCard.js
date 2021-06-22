@@ -6,6 +6,7 @@ import "./PostCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments, faHeart } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import Moment from "react-moment";
 
 export default function PostCard(props) {
   const postId = props.postId;
@@ -53,12 +54,9 @@ export default function PostCard(props) {
           <h5 className="card-title">{props.content}</h5>
           <p className="card-text">
             <span className="date_post text-muted">
-              {" "}
-              publié le {new Date(props.createdAt).toLocaleDateString(
-                "fr-FR"
-              )}{" "}
-              à {new Date(props.createdAt).toLocaleTimeString("fr-FR")} par{" "}
-              {props.postUsername}
+              Posté par {username}
+              {", "}
+              <Moment fromNow>{props.createdAt}</Moment>
             </span>
           </p>
           <div>
