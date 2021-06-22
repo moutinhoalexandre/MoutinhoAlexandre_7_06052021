@@ -26,7 +26,7 @@ exports.createComment = (req, res, next) => {
             )
             .catch((error) => res.status(400).json({ error }));
         })
-        .catch((error) => res.status(400).json({ error })); // jshint ignore:line
+        .catch((error) => res.status(400).json({ error }));
   } else {
     return res.status(401).json({ error: "Commentaire non valide" });
   }
@@ -55,7 +55,7 @@ exports.deleteComment = (req, res, next) => {
         }),
           comment
             .destroy({ where: { id: id } })
-            .catch((error) => res.status(400).json({ error })); // jshint ignore:line
+            .catch((error) => res.status(400).json({ error }));
       } else {
         return res
           .status(401)

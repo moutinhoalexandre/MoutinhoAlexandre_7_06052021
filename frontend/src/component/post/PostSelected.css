@@ -1,55 +1,60 @@
 .bouton {
-    text-transform: none ;
-    text-decoration: none;
-    font-size: 1em;
-    font-weight: 500;
-    color: black ;
-    background-color: white !important;
-    border: 0.3rem solid rgba(9, 9, 121, 1);
-    border-radius: 5px;
-    transition:0.5s;
-    margin-bottom: 2%;
+  text-transform: none;
+  text-decoration: none;
+  font-size: 1em;
+  font-weight: 500;
+  color: black;
+  background-color: white !important;
+  border: 0.3rem solid rgba(9, 9, 121, 1);
+  border-radius: 5px;
+  transition: 0.5s;
+  margin-bottom: 2%;
 }
 
 .bouton:hover {
-background: linear-gradient(
+  background: linear-gradient(
     45deg,
     rgba(2, 0, 36, 1) 0%,
     rgba(9, 9, 121, 1) 35%,
     rgba(0, 212, 255, 1) 100%
-  )!important;
-    color: white !important;
-    text-decoration: none !important;
+  ) !important;
+  color: white !important;
+  text-decoration: none !important;
 }
 
-.displayNone{
-    display:none
+.displayNone {
+  display: none;
 }
 
-.comments{
-    background: linear-gradient(
+.comments {
+  background: linear-gradient(
     45deg,
     rgba(2, 0, 36, 1) 0%,
     rgba(9, 9, 121, 1) 35%,
     rgba(0, 212, 255, 1) 100%
-  )!important;
+  ) !important;
 
-  border-radius: 20px ;
+  border-radius: 20px;
 }
 
-.imag{
-    height : 100vh;
+.imag {
+  height: 100vh;
 }
 
-.iconeExclamationPost{
-    position: absolute;
-    right: 2%;
-    bottom:8%;
-    font-size:20px !important;
+.iconeExclamationPost {
+  position: absolute;
+  right: 2%;
+  bottom: 8%;
+  font-size: 20px !important;
 }
 
-.fontExclamation{
-    font-size:1rem;
-    color :cadetblue;
-        cursor: pointer;
+.fontExclamation {
+  font-size: 1rem;
+  color: cadetblue;
+  cursor: pointer;
+}
+
+.heart {
+  cursor: pointer;
+  color: rgba(0, 212, 255, 1);
 }

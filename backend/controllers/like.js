@@ -4,7 +4,7 @@ const identification = require("../utils/identification");
 exports.likePost = (req, res, next) => {
   const userId = identification.userId(req);
   const isliked = req.body.like;
-  console.log(isliked)
+  console.log(isliked);
   const postId = req.params.id;
 
   Post.findOne({ where: { id: postId } })
@@ -47,8 +47,14 @@ exports.likePost = (req, res, next) => {
 
 //recupérer tous les likes d'un post
 exports.getLike = (req, res, next) => {
-  Like.findAll({ where: { postId: req.params.id } }) //On récupère le post correspondant à l'id
+  Like.findAll({ where: { postId: req.params.id } })
     .then((like) => res.status(200).json(like))
     .catch((error) => res.status(404).json({ error }));
 };
 
+//Renvoie le like si un utilisateur aime un post
+exports.isLiked = (req, res, next) => {
+  Like.findOne({ where: { userId: req.params.id, postId: req.params.idPost } })
+    .then((like) => res.status(200).json(like))
+    .catch((error) => res.status(404).json({ error }));
+};

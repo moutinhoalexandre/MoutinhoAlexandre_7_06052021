@@ -4,25 +4,14 @@ import avatar from "../../assets/avatar.jpeg";
 
 function ProfileCard({ name, image }) {
   return (
-
     <div className="profile_card ms-2 ">
       <div className="col bg-dark p-3 mb-4">
         <div className="text-center text-white">
           <div className="avatar rounded-circle mx-auto">
             {image === null ? (
-              <img
-                className="rounded-circle"
-
-                src={avatar}
-                alt="avatar"
-              />
+              <img className="rounded-circle" src={avatar} alt="avatar" />
             ) : (
-              <img
-                className="rounded-circle"
-
-                src={image}
-                alt="avatar"
-              />
+              <img className="rounded-circle" src={image} alt="avatar" />
             )}
           </div>
           <h4 className="mt-3">Bienvenue</h4>
@@ -36,7 +25,6 @@ function ProfileCard({ name, image }) {
         </div>
       </div>
     </div>
-
   );
 }
 export default ProfileCard;

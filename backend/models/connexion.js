@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize, DataTypes } = require("sequelize");
 
 //connection à la base de données
 const database = new Sequelize(
@@ -8,9 +8,9 @@ const database = new Sequelize(
 database
   .authenticate()
   .then(() =>
-    console.log('Vous êtes maintenant connecté à la base de donnée !')
+    console.log("Vous êtes maintenant connecté à la base de donnée !")
   )
-  .catch((err) => console.log('erreur d\'authentification: ' + err));
+  .catch((err) => console.log("erreur d'authentification: " + err));
 
 module.exports = {
   Sequelize,

@@ -102,7 +102,12 @@ form.sign-in-form {
 
 .boutton {
   width: 150px;
-  background: linear-gradient(45deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(
+    45deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
   border: none;
   outline: none;
   height: 49px;
@@ -130,8 +135,6 @@ form.sign-in-form {
   opacity: 1;
   z-index: 2;
 }
-
-
 
 @media (max-width: 570px) {
   form {

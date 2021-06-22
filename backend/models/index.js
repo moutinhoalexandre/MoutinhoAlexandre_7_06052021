@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const Post = require("../models/post");
 const Comment = require("../models/comment");
-const Like =require("../models/like");
+const Like = require("../models/like");
 
 User.hasMany(Post, { onDelete: "CASCADE" });
 

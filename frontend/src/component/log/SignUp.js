@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
@@ -51,7 +52,7 @@ export default function SignUp(props) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Username ou email déjà utilisé!",
+          text: "Username ou email non valide",
         });
       }
     }

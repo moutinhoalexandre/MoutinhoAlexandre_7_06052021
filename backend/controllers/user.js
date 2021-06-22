@@ -1,43 +1,26 @@
 const bcrypt = require("bcrypt"); //Permet de hasher et saler les mots de passe
 const jwt = require("jsonwebtoken"); //Permet de créer un token utilisateur
-const fs = require('fs'); //système de gestion de fichier de Node
-const identification = require('../utils/identification');
+const fs = require("fs"); //système de gestion de fichier de Node
+const identification = require("../utils/identification");
 
 const { User } = require("../models/index");
 
 const passwordValidator = require("password-validator");
 const schema = new passwordValidator(); //On crée un schema pour obtenir des mots de passe plus sécurisés
 schema
-  .is()
-  .min(8) // min 8 caractères
-  .has()
-  .digits(1) // min 1 chiffre
-  .has()
-  .uppercase(1) // min 1 caractère majuscule
-  .has()
-  .lowercase(1) // min 1 caractère minuscule
-  .has()
-  .symbols(1) // min 1 symbole
-  .has()
-  .not()
-  .spaces(); // ne doit pas contenir d'espace
-
-//TODO: a remplacer par Crypto.js
-//On masque l'email
-// const emailMask2Options = {
-//   maskWith: "*",
-//   unmaskedStartCharactersBeforeAt: 0,
-//   unmaskedEndCharactersAfterAt: 0,
-//   maskAtTheRate: false,
-// };
+  .is().min(8) // min 8 caractères
+  .has().digits(1) // min 1 chiffre
+  .has().uppercase(1) // min 1 caractère majuscule
+  .has().lowercase(1) // min 1 caractère minuscule
+  .has().symbols(1) // min 1 symbole
+  .has().not().spaces(); // ne doit pas contenir d'espace
 
 //Enregistrement d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
   if (!schema.validate(req.body.password)) {
     //Vérifie si  le schema de mot de passe est pas respecté
     res.status(401).json({
-      message:
-        `Mot de passe pas assez sécurisé, il doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule, un symbole et ne pas contenir d'espace !`,
+      message: `Mot de passe pas assez sécurisé, il doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule, un symbole et ne pas contenir d'espace !`,
     });
     return false;
   }
@@ -74,9 +57,13 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user.id,
-            token: jwt.sign({ userId: user.id, is_admin: user.is_admin }, process.env.JWT_SECRET_TOKEN, {
-              expiresIn: "24h",
-            }),
+            token: jwt.sign(
+              { userId: user.id, is_admin: user.is_admin },
+              process.env.JWT_SECRET_TOKEN,
+              {
+                expiresIn: "24h",
+              }
+            ),
             is_admin: user.is_admin,
           });
         })
@@ -102,7 +89,9 @@ exports.modifyUser = (req, res, next) => {
               }
             });
           }
-          req.body.image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+          req.body.image = `${req.protocol}://${req.get("host")}/images/${
+            req.file.filename
+          }`;
         }
         delete req.body.isAdmin;
         delete req.body.password;
@@ -131,8 +120,7 @@ exports.modifyPassword = (req, res, next) => {
       .then((user) => {
         if (!schema.validate(req.body.password)) {
           res.status(401).json({
-            message:
-              `Mot de passe pas assez sécurisé, il doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule, un symbole et ne pas contenir d'espace !`,
+            message: `Mot de passe pas assez sécurisé, il doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule, un symbole et ne pas contenir d'espace !`,
           });
           return false;
         }
@@ -178,24 +166,29 @@ exports.deleteUser = (req, res, next) => {
   const id = JSON.parse(req.params.id);
   const userId = identification.userId(req);
   const isAdmin = identification.isAdmin(req);
-  if(id === userId || isAdmin ){
+  if (id === userId || isAdmin) {
     User.findOne({ where: { id: id } })
-        .then(user => {
-          if (user.image !== null){
-            const fileName = user.image.split('/images/')[1];
-            fs.unlink(`images/${fileName}`, (err => {
-              if (err) console.log(err);
-              else {
-                console.log(`Image supprimée: ` + fileName);
-              }
-            }));
-          }
-          user.destroy({ where: { id: id } })
-              .then(() => res.status(200).json({  message: 'Utilisateur supprimé !' }))
-              .catch(error =>  res.status(400).json({ error }));
-        })
-        .catch(error => res.status(500).json({ error }));
-  }else {
-    return res.status(401).json({ error: `Vous n'avez pas l'autorisation nécessaire !`, });
+      .then((user) => {
+        if (user.image !== null) {
+          const fileName = user.image.split("/images/")[1];
+          fs.unlink(`images/${fileName}`, (err) => {
+            if (err) console.log(err);
+            else {
+              console.log(`Image supprimée: ` + fileName);
+            }
+          });
+        }
+        user
+          .destroy({ where: { id: id } })
+          .then(() =>
+            res.status(200).json({ message: "Utilisateur supprimé !" })
+          )
+          .catch((error) => res.status(400).json({ error }));
+      })
+      .catch((error) => res.status(500).json({ error }));
+  } else {
+    return res
+      .status(401)
+      .json({ error: `Vous n'avez pas l'autorisation nécessaire !` });
   }
 };

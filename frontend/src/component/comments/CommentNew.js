@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
-import "./CommentNew.css"
+import "./CommentNew.css";
 import { useState } from "react";
 
 export default function CommentNew(props) {
@@ -21,14 +21,12 @@ export default function CommentNew(props) {
     const token = localStorage.getItem("token");
 
     axios
-      .post("http://localhost:3000/api/comment", invoice,  {
+      .post("http://localhost:3000/api/comment", invoice, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      })
 
-      }
-      )
-      
       .then((res) => {
         window.location.reload();
       })
@@ -49,7 +47,6 @@ export default function CommentNew(props) {
               as="textarea"
               rows={1}
               name="content"
-              // value={newComment}
               onChange={handleChange}
             />
 

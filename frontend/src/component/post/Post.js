@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import "./Post.css";
 import NavBar from "../navbar/NavBar";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Post() {
   const [post, setPost] = useState();
@@ -15,26 +17,33 @@ export default function Post() {
     const name = e.target.name;
     const value = e.target.value;
     setModification({ ...modification, [name]: value });
-             setFormDataEmpty(!formDataEmpty);
+    setFormDataEmpty(true);
   };
 
   const changeSelectImage = () => {
     setSelectImage(!selectImage);
-         setFormDataEmpty(!formDataEmpty);
+    setFormDataEmpty(true);
   };
 
   const handleSubmit = (e) => {
-   e.preventDefault();
+    e.preventDefault();
 
-   const formData = new FormData();
-   const imagedata = document.querySelector('input[type="file"]').files[0];
-   if (selectImage) {
-     formData.append("image", imagedata);
-   }
-  
-   formData.append("content", modification.content);
-    if (formDataEmpty === false) { alert("Attention") } else {
-  
+    const formData = new FormData();
+    const imagedata = document.querySelector('input[type="file"]').files[0];
+    if (selectImage) {
+      formData.append("image", imagedata);
+    }
+
+    formData.append("content", modification.content);
+    console.log(formData);
+    if (formDataEmpty === false) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Veuillez choisir une image ou saisir un texte!",
+        confirmButtonColor: "#3085d6",
+      });
+    } else {
       const token = localStorage.getItem("token");
       axios
         .post("http://localhost:3000/api/post", formData, {
@@ -52,7 +61,7 @@ export default function Post() {
             "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
           );
         });
-}
+    }
   };
 
   return (

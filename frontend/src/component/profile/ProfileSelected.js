@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import "./Profile.css";
-import ProfileUpdate from "./ProfileUpdate";
 import Navbar from "../navbar/NavBar";
+import PostCard from "../post/PostCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import button from "react-bootstrap/Button";
 import avatar from "../../assets/avatar.jpeg";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -12,8 +12,8 @@ import Swal from "sweetalert2";
 export default function ProfileSelected({ match, props }) {
   const location = useLocation(props);
   const userId = location.state?.userId;
-  console.log(userId);
   const [user, setUser] = useState([]);
+  const [posts, setPosts] = useState([]);
   const isAdmin = localStorage.getItem("is_admin");
 
   const getOneProfile = () => {
@@ -67,8 +67,32 @@ export default function ProfileSelected({ match, props }) {
       }
     });
   };
+
   useEffect(() => {
     getOneProfile();
+  }, []);
+
+  const getAllPostsByUser = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://localhost:3000/api/post/user/" + userId, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setPosts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(
+          "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
+        );
+      });
+  };
+
+  useEffect(() => {
+    getAllPostsByUser();
   }, []);
 
   return (
@@ -94,29 +118,6 @@ export default function ProfileSelected({ match, props }) {
                 />
               )}
             </div>
-            {/* <div className="text-center mt-4">
-              <label className="label-file text-white mb-3" htmlFor="image">
-                Choisir une image
-              </label>
-              <input
-                name="image"
-                id="image"
-                className="input-file text-white"
-                type="file"
-                accept="image/*"
-                onChange={handleSubmit}
-              ></input>
-            </div> */}
-            {/* <div className="text-center">
-              <button
-                type="submit"
-                button-file
-                className="button-file btn p-2 mt-0 mb-4 me-2 text-white"
-                onClick={handleSubmit}
-              >
-                Ajouter l'image
-              </button>
-            </div> */}
             <div className="pb-4 pe-4 ps-4 text-center">
               <h5 className=" text-white mb-4">Informations</h5>
               <div className="border-bottom text-white mb-2">Username</div>
@@ -136,6 +137,40 @@ export default function ProfileSelected({ match, props }) {
                 <div className="bouton btn btn-sm mx-5" onClick={deleteProfil}>
                   Supprimer le compte
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-profilepage">
+          <div className="row d-flex justify-content-center">
+            <div className="col-10 col-lg-8 mt-5 p-0 mx-5 rounded">
+              <div className="last-post pt-3 pb-3 ms-2 fw-bold">
+                DERNIERS POSTS
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-profilepage">
+          <div className="row d-flex justify-content-center">
+            <div className="col-10 col-lg-8 p-0 mx-5 mb-3 rounded">
+              <div className=" post-list">
+                {posts.map((post) => (
+                  <div
+                    className="border rounded ms-2 mb-4 bg-white"
+                    key={post.id}
+                  >
+                    <PostCard
+                      content={post.content}
+                      image={post.image}
+                      createdAt={post.createdAt}
+                      postUsername={post.User.username}
+                      postId={post.id}
+                      userId={post.userId}
+                      comments={post.comments}
+                      likes={post.likes}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>

@@ -15,5 +15,4 @@ router.put("/profile/:id", multer, userCtrl.modifyUser); //Modifier un utilisate
 router.put("/profile/:id/password", multer, userCtrl.modifyPassword); //Modifier un mot de passe utilisateur
 router.delete("/profile/:id", multer, userCtrl.deleteUser); //Supprimer un utilisateur
 
-
 module.exports = router;

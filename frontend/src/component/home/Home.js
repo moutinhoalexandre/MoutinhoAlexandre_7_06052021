@@ -2,15 +2,12 @@ import React from "react";
 import { useEffect } from "react";
 import "./Home.css";
 import Navbar from "../navbar/NavBar";
-// import Footer from "./Footer";
 import PostCard from "../post/PostCard";
 import ProfileCard from "../profile/ProfileCard";
-import ProfileCardMember from "../profile/ProfileCardMember"
+import ProfileCardMember from "../profile/ProfileCardMember";
 import axios from "axios";
-import button from "react-bootstrap/Button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
 
 export default function Home() {
   const [users, setUsers] = useState([]);
@@ -77,8 +74,6 @@ export default function Home() {
     getAllPosts();
   }, []);
 
-
-
   return (
     <div>
       <Navbar />
@@ -99,12 +94,7 @@ export default function Home() {
         <div className="col-12 col-lg-9">
           <Link to="/Post" className="link">
             <div className="d-flex justify-content-center">
-              <button
-                className="bouton btn-sm mx-5 "
-                // onClick={handleSubmitModification}
-              >
-                Publier un post
-              </button>
+              <button className="bouton btn-sm mx-5 ">Publier un post</button>
             </div>
           </Link>
           <div className="last-post pt-3 pb-3 ms-2 fw-bold">DERNIERS POSTS</div>
@@ -119,14 +109,13 @@ export default function Home() {
                   postId={post.id}
                   userId={post.userId}
                   comments={post.comments}
-                  likes={post.likes}
+                  liked={post.likes}
                 />
               </div>
             ))}
           </div>
         </div>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 }

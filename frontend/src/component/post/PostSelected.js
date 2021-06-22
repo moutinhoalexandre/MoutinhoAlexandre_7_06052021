@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import NavBar from "../navbar/NavBar";
 import Comments from "../comments/Comments";
@@ -10,20 +11,94 @@ import "./PostSelected.css";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faTimes,
+  faHeart,
   faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function PostSelected({ match, props }) {
-  const [post, setPost] = useState([]);
-    const [comments, setComments] = useState([]);
   const location = useLocation(props);
   const postId = location.state?.postId;
   const username = location.state?.username;
   const userId = location.state?.userId;
-  const localUserId = localStorage.getItem("userId");
+  const localUserId = Number(localStorage.getItem("userId"));
   const isAdmin = localStorage.getItem("is_admin");
 
+  const [post, setPost] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [likes, setLikes] = useState([]);
+  const [isItLiked, setIsItLiked] = useState(true);
+
+  const getLikes = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://localhost:3000/api/like/post/" + postId, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setLikes(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert(
+          "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
+        );
+      });
+  };
+
+  useEffect(() => {
+    getLikes();
+  }, []);
+
+  const isLiked = () => {
+    const token = localStorage.getItem("token");
+    const userID = Number(localStorage.getItem("userId"));
+    axios
+      .get("http://localhost:3000/api/like/" + postId + "/like/" + userID, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        if (res.data !== null) {
+          setIsItLiked(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert(
+          "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
+        );
+      });
+  };
+
+  useEffect(() => {
+    isLiked();
+  }, []);
+
+  const doLike = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .post(
+        "http://localhost:3000/api/like/post/" + postId,
+        { like: isItLiked },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert(
+          "Une erreur est survenue, veuillez réessayer plus tard. Si le problème persiste, contactez l'administrateur du site"
+        );
+      });
+  };
 
   const getOnePost = () => {
     const token = localStorage.getItem("token");
@@ -82,8 +157,6 @@ export default function PostSelected({ match, props }) {
     getOnePost();
   }, []);
 
-
-
   const getAllComments = () => {
     const token = localStorage.getItem("token");
 
@@ -103,6 +176,7 @@ export default function PostSelected({ match, props }) {
         );
       });
   };
+
   useEffect(() => {
     getAllComments();
   }, []);
@@ -120,7 +194,7 @@ export default function PostSelected({ match, props }) {
       if (result.isConfirmed) {
         Swal.fire(
           "Le post a été signalé!",
-          "Un modérateur va rapidement s'en occupé.",
+          "Un modérateur va rapidement s'en occuper.",
           "success"
         );
       }
@@ -147,13 +221,13 @@ export default function PostSelected({ match, props }) {
             </div>
             <div className="card-body">
               <h5 className="card-title" key={"content" + postId}>
-              <i className="iconeExclamationPost">
-                <FontAwesomeIcon
-                  icon={faExclamationTriangle}
-                  className="fontExclamation"
-                  onClick={report}
-                />
-              </i>
+                <i className="iconeExclamationPost">
+                  <FontAwesomeIcon
+                    icon={faExclamationTriangle}
+                    className="fontExclamation"
+                    onClick={report}
+                  />
+                </i>
                 {post.content}
               </h5>
               <p className="card-text">
@@ -165,10 +239,19 @@ export default function PostSelected({ match, props }) {
                   {username}
                 </span>
               </p>
+              <div>
+                {" "}
+                {likes.length}
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  className="comment heart"
+                  onClick={doLike}
+                />
+              </div>
             </div>
             <div
               className={
-                userId == localUserId
+                userId === localUserId
                   ? "d-flex justify-content-center"
                   : isAdmin === "true"
                   ? "d-flex justify-content-center"
@@ -183,7 +266,7 @@ export default function PostSelected({ match, props }) {
           <CommentNew postId={postId} />
           <div
             className={
-              comments.length == 0
+              comments.length === 0
                 ? "displayNone"
                 : " mt-2 p-2 pb-1 px-3 comments"
             }

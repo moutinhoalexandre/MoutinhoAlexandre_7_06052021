@@ -1,8 +1,8 @@
-'use strict';
-const { Sequelize, DataTypes, database } = require('./connexion');
+"use strict";
+const { Sequelize, DataTypes, database } = require("./connexion");
 
 const User = database.define(
-  'User',
+  "User",
   {
     username: {
       type: DataTypes.STRING,
@@ -24,7 +24,7 @@ const User = database.define(
   },
   {
     Sequelize,
-    modelName: 'User',
+    modelName: "User",
   }
 );
 

@@ -5,10 +5,10 @@ import avatar from "../../assets/avatar.jpeg"
 export default function ProfileCardMember(props) {
   const userId = props.user.id;
   const avatarImage = props.user.image
+  
   return (
     <>
       <Link
-        // key={"user" + userId}
         className="link"
         to={{
           pathname: "/profileSelected/",
