@@ -23,3 +23,21 @@ color : red;
     color :cadetblue;
         cursor: pointer;
 }
+
+@media screen and (max-width: 730px) {   
+.iconeExclamation{
+    right: 7%;
+}
+}
+
+@media screen and (max-width: 460px) {
+    .iconeTime{
+    right: 1%;
+    top:1%;
+}
+.iconeExclamation{
+    right: 1%;
+    top:17%;
+}
+
+}

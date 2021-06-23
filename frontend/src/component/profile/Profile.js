@@ -234,7 +234,7 @@ export default function Profile() {
                     postId={post.id}
                     userId={post.userId}
                     comments={post.comments}
-                    likes={post.likes}
+                    liked={post.likes}
                   />
                 </div>
               ))}
