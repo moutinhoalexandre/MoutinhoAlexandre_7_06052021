@@ -25,7 +25,7 @@ export default function Authentification() {
         <div className="panels-containers">
           <div className="panel left-panel">
             <div className="content">
-              <h3>One of us ?</h3>
+              <h3>Déjà inscrit?</h3>
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
                 laboriosam ad deleniti.
@@ -42,7 +42,7 @@ export default function Authentification() {
           </div>
           <div className="panel right-panel">
             <div className="content">
-              <h3>New here ?</h3>
+              <h3>Nouveau ici ?</h3>
               <p>
                 Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                 Debitis, ex ratione. Aliquid!
