@@ -7,3 +7,4 @@ DATABASE_USER ="le nom d'utilisateur"
 DATABASE_PASSWORD ="le mot de passe"
 
 # authentification
+JWT_SECRET_TOKEN = "le token"
